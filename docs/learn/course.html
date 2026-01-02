@@ -1,0 +1,2746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUASAR Academy - Master Quantum Computing</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg-card: #0f0f18;
+            --bg-elevated: #14141f;
+            --bg-input: #1a1a25;
+            --border: #252535;
+            --text: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-dim: #606075;
+            --accent: #00d4ff;
+            --accent-dim: rgba(0, 212, 255, 0.2);
+            --purple: #a855f7;
+            --purple-dim: rgba(168, 85, 247, 0.2);
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.2);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234, 179, 8, 0.2);
+            --red: #ef4444;
+            --orange: #f97316;
+            --pink: #ec4899;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-sub {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .progress-section {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .xp-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .xp-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Module list */
+        .module-list {
+            list-style: none;
+        }
+
+        .module-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .module-header:hover {
+            background: var(--bg-elevated);
+        }
+
+        .module-header.active {
+            background: var(--accent-dim);
+        }
+
+        .module-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .module-icon.locked { background: var(--bg); color: var(--text-dim); }
+        .module-icon.available { background: var(--accent-dim); color: var(--accent); }
+        .module-icon.completed { background: var(--green-dim); color: var(--green); }
+        .module-icon.current { background: var(--yellow-dim); color: var(--yellow); }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .module-status {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .lesson-list {
+            list-style: none;
+            margin-left: 2.5rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .lesson-list.show {
+            display: block;
+        }
+
+        .lesson-item {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-left: 2px solid var(--border);
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lesson-item:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        .lesson-item.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .lesson-item.completed::before {
+            content: '✓ ';
+            color: var(--green);
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 3rem;
+            max-width: 900px;
+        }
+
+        /* Lesson content */
+        .lesson {
+            display: none;
+        }
+
+        .lesson.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lesson-header {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb span {
+            color: var(--accent);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--purple);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .lead {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        /* Content blocks */
+        .block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .block.info {
+            border-left: 4px solid var(--accent);
+            background: linear-gradient(90deg, var(--accent-dim), var(--bg-card));
+        }
+
+        .block.warning {
+            border-left: 4px solid var(--yellow);
+            background: linear-gradient(90deg, var(--yellow-dim), var(--bg-card));
+        }
+
+        .block.success {
+            border-left: 4px solid var(--green);
+            background: linear-gradient(90deg, var(--green-dim), var(--bg-card));
+        }
+
+        .block.example {
+            border-left: 4px solid var(--purple);
+            background: linear-gradient(90deg, var(--purple-dim), var(--bg-card));
+        }
+
+        .block-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .block.info .block-title { color: var(--accent); }
+        .block.warning .block-title { color: var(--yellow); }
+        .block.success .block-title { color: var(--green); }
+        .block.example .block-title { color: var(--purple); }
+
+        /* Analogy box */
+        .analogy {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .analogy::before {
+            content: '💡';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 1.5rem;
+            background: var(--bg);
+            padding: 0 0.5rem;
+        }
+
+        .analogy-title {
+            font-weight: 600;
+            color: var(--yellow);
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive elements */
+        .interactive {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .interactive-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .interactive-title::before {
+            content: '🎮';
+        }
+
+        /* Challenge box */
+        .challenge {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--purple);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .challenge::before {
+            content: '🎯 CHALLENGE';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: var(--bg);
+            padding: 0 0.75rem;
+            color: var(--purple);
+            letter-spacing: 1px;
+        }
+
+        .challenge-goal {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .challenge-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .challenge-status.pending { color: var(--text-dim); }
+        .challenge-status.success { color: var(--green); background: var(--green-dim); }
+        .challenge-status.hint { color: var(--yellow); background: var(--yellow-dim); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border: none;
+            border-radius: 10px;
+            color: var(--bg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Visual demos */
+        .visual-demo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--bg);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-item {
+            text-align: center;
+        }
+
+        .demo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 0.75rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .demo-circle.off {
+            background: var(--bg-card);
+            border: 3px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .demo-circle.on {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border: 3px solid var(--accent);
+            color: var(--bg);
+        }
+
+        .demo-circle.superposition {
+            background: linear-gradient(135deg, var(--bg-card) 50%, var(--accent) 50%);
+            border: 3px solid var(--purple);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .demo-circle:hover {
+            transform: scale(1.05);
+        }
+
+        .demo-circle:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--purple-dim); }
+            50% { box-shadow: 0 0 20px 10px var(--purple-dim); }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .celebrate {
+            animation: celebrate 0.5s ease;
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+
+        .demo-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-arrow {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        /* Comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-item.highlight {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, var(--accent-dim), var(--bg-card));
+        }
+
+        .comparison-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Steps */
+        .steps {
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        /* Quiz */
+        .quiz {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--green);
+            background: var(--green-dim);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .quiz-option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quiz-feedback.correct {
+            background: var(--green-dim);
+            border: 1px solid var(--green);
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--red);
+        }
+
+        /* Progress celebration */
+        .celebration {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--accent-dim), var(--purple-dim));
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .celebration-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .celebration h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .xp-gained {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--yellow);
+            margin-top: 1rem;
+        }
+
+        /* Binary Counter */
+        .binary-counter {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .binary-bit {
+            width: 60px;
+            height: 70px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .binary-bit:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .binary-bit.on {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+        }
+
+        .binary-bit .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .binary-bit .weight {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .decimal-display {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .decimal-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        .decimal-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Amplitude visualization */
+        .amplitude-viz {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .amplitude-bar {
+            text-align: center;
+        }
+
+        .amplitude-label {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .amplitude-container {
+            width: 60px;
+            height: 150px;
+            background: var(--bg);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .amplitude-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, var(--accent), var(--purple));
+            transition: height 0.5s ease;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .amplitude-value {
+            font-family: monospace;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Gate buttons */
+        .gate-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .gate-btn {
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gate-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+
+        .gate-btn:active {
+            transform: translateY(0);
+        }
+
+        .gate-btn.highlight {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-dim);
+        }
+
+        .gate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* State display */
+        .state-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg);
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .state-ket { color: var(--purple); }
+        .state-amp { color: var(--accent); }
+        .state-plus { color: var(--text-dim); }
+
+        /* Circuit Builder */
+        .circuit-builder {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .circuit-wire {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .circuit-wire:last-child {
+            border-bottom: none;
+        }
+
+        .wire-label {
+            width: 40px;
+            font-family: monospace;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .wire-line {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .circuit-gate {
+            width: 40px;
+            height: 40px;
+            background: var(--purple);
+            border: 2px solid var(--purple);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-family: monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .circuit-gate:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--purple-dim);
+        }
+
+        .circuit-gate.highlight {
+            animation: pulse 1s infinite;
+        }
+
+        .wire-output {
+            width: 50px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* Gate Palette */
+        .gate-palette {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .palette-gate {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-elevated);
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: grab;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .palette-gate:hover {
+            border-color: var(--accent);
+            border-style: solid;
+            background: var(--accent-dim);
+        }
+
+        .palette-gate.dragging {
+            opacity: 0.5;
+        }
+
+        .palette-gate[data-gate="X"] { color: var(--orange); }
+        .palette-gate[data-gate="H"] { color: var(--accent); }
+        .palette-gate[data-gate="Z"] { color: var(--purple); }
+        .palette-gate[data-gate="Y"] { color: var(--green); }
+
+        /* Drop zones */
+        .drop-zone {
+            width: 44px;
+            height: 44px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .drop-zone.dragover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .drop-zone.filled {
+            border-style: solid;
+            border-color: var(--purple);
+            background: var(--purple);
+            color: white;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        /* Qubit row for multi-qubit */
+        .qubit-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 10px;
+            margin: 0.5rem 0;
+        }
+
+        .qubit-row .qubit-label {
+            font-family: monospace;
+            color: var(--accent);
+            font-weight: bold;
+            width: 60px;
+        }
+
+        .qubit-row .qubit-visual {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        /* Probability bars */
+        .prob-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .prob-bar-item {
+            text-align: center;
+        }
+
+        .prob-bar-container {
+            height: 120px;
+            background: var(--bg);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .prob-bar-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, var(--accent), var(--purple));
+            transition: height 0.3s ease;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .prob-bar-label {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .prob-bar-value {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* History log */
+        .history-log {
+            max-height: 150px;
+            overflow-y: auto;
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .history-entry {
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-entry:last-child {
+            border-bottom: none;
+        }
+
+        .history-entry .gate {
+            color: var(--purple);
+            font-weight: bold;
+        }
+
+        .history-entry .result {
+            color: var(--accent);
+        }
+
+        /* Measurement animation */
+        @keyframes measure {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .measuring {
+            animation: measure 0.5s ease;
+        }
+
+        /* Lesson navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .code-keyword { color: var(--purple); }
+        .code-function { color: var(--accent); }
+        .code-string { color: var(--green); }
+        .code-number { color: var(--orange); }
+        .code-comment { color: var(--text-dim); }
+
+        /* Recap */
+        .recap {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .recap-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recap-list {
+            list-style: none;
+        }
+
+        .recap-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .recap-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+        }
+
+        /* Achievement popup */
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border: 2px solid var(--yellow);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.5s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .achievement.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            color: var(--yellow);
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Achievement Popup -->
+        <div class="achievement" id="achievement">
+            <div class="achievement-icon" id="achievementIcon">🏆</div>
+            <div class="achievement-title" id="achievementTitle">Achievement Unlocked!</div>
+            <div class="achievement-desc" id="achievementDesc">You did something amazing!</div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">QUASAR Academy</div>
+            <div class="logo-sub">Master Quantum Computing</div>
+
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Your Progress</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="xp-display">
+                    <span class="xp-icon">⭐</span>
+                    <span><span id="xpCount">0</span> XP earned</span>
+                </div>
+            </div>
+
+            <ul class="module-list" id="moduleList">
+                <!-- Populated by JS -->
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- LESSON: Welcome -->
+            <div class="lesson active" id="lesson-welcome">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Getting Started</div>
+                    <h1>Hey! Let's Learn Something Cool</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Start Here</div>
+                        <div class="meta-item">⏱️ 2 min</div>
+                    </div>
+                </div>
+
+                <p class="lead">Hi friend! We're going to learn about quantum computers. Sounds hard? It's not! I'll explain everything super simply - like I'm talking to my little cousin.</p>
+
+                <div class="block info">
+                    <div class="block-title">💡 This is a GAME, not a boring lecture!</div>
+                    <p>Here's what we'll do:</p>
+                    <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                        <li>Click buttons and play with stuff</li>
+                        <li>Do fun little challenges</li>
+                        <li>Learn by trying, not just reading</li>
+                        <li>Go as slow as you need - no rush!</li>
+                    </ul>
+                </div>
+
+                <h2>Quick Test - Can You Click?</h2>
+
+                <p>Just click the circle 3 times. Easy peasy:</p>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Click the circle exactly 3 times to continue</div>
+                    <div class="visual-demo">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="welcomeClicker" onclick="welcomeClick()">
+                                <span id="welcomeCount">0</span>
+                            </div>
+                            <div class="demo-label" id="welcomeLabel">Clicks: 0/3</div>
+                        </div>
+                    </div>
+                    <div class="challenge-status pending" id="welcomeStatus">
+                        ⏳ Click the circle 3 times
+                    </div>
+                </div>
+
+                <div id="welcomeComplete" style="display: none;">
+                    <div class="celebration">
+                        <div class="celebration-icon">🚀</div>
+                        <h3>Perfect! You're Ready!</h3>
+                        <p style="color: var(--text-secondary);">Every lesson has interactive challenges like this. Let's begin!</p>
+                        <button class="btn" onclick="goToLesson('what-is-computer')" style="margin-top: 1rem;">
+                            Start Learning →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LESSON: What is a Computer -->
+            <div class="lesson" id="lesson-what-is-computer">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 1 → <span>The Light Switch</span></div>
+                    <h1>It All Starts With a Light Switch</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Super easy</div>
+                        <div class="meta-item">⭐ +20 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">You know what a light switch does, right? It's either ON or OFF. That's it. That's the whole secret of computers!</p>
+
+                <h2>Think About a Light Switch</h2>
+
+                <p>A light switch can only be in TWO positions:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    <li><strong>OFF</strong> - the light is dark (we call this "0")</li>
+                    <li><strong>ON</strong> - the light is bright (we call this "1")</li>
+                </ul>
+                <p>You can't have a light switch that's "half on". It's one or the other. Always.</p>
+
+                <div class="block info">
+                    <div class="block-title">🎯 This simple on/off thing is called a "BIT"</div>
+                    <p>A bit is just like a light switch. It's either <strong>0</strong> (off) or <strong>1</strong> (on). That's the building block of ALL computers!</p>
+                </div>
+
+                <h2>Try It! Click the Switch</h2>
+
+                <p>Click the circle below to flip it between 0 and 1. See? It can ONLY be one or the other!</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">Click to toggle</div>
+                    <div class="visual-demo">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="toggleBit" onclick="toggleBitDemo()">0</div>
+                            <div class="demo-label" id="toggleLabel">The bit is 0 (OFF)</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: var(--text-dim); margin-top: 1rem;">
+                        This is the foundation of ALL classical computing.
+                    </p>
+                </div>
+
+                <h2>Now Let's Count!</h2>
+
+                <p>Here's the cool part: if you have MANY light switches, you can count big numbers!</p>
+                <p>Each switch is worth a different amount. Click the switches below to make the number 13:</p>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Turn on the right switches to make 13</div>
+
+                    <div class="binary-counter" id="binaryCounter">
+                        <div class="binary-bit" data-weight="8" onclick="toggleBinaryBit(this)">
+                            <span class="value">0</span>
+                            <span class="weight">×8</span>
+                        </div>
+                        <div class="binary-bit" data-weight="4" onclick="toggleBinaryBit(this)">
+                            <span class="value">0</span>
+                            <span class="weight">×4</span>
+                        </div>
+                        <div class="binary-bit" data-weight="2" onclick="toggleBinaryBit(this)">
+                            <span class="value">0</span>
+                            <span class="weight">×2</span>
+                        </div>
+                        <div class="binary-bit" data-weight="1" onclick="toggleBinaryBit(this)">
+                            <span class="value">0</span>
+                            <span class="weight">×1</span>
+                        </div>
+                    </div>
+
+                    <div class="decimal-display">
+                        <div class="decimal-value" id="decimalValue">0</div>
+                        <div class="decimal-label">Decimal Value</div>
+                    </div>
+
+                    <div class="challenge-status pending" id="binaryStatus">
+                        ⏳ Make the number equal 13 (hint: 8+4+0+1)
+                    </div>
+                </div>
+
+                <h2>Quick Quiz!</h2>
+
+                <div class="quiz" id="quiz-computer">
+                    <div class="quiz-question">A light switch (bit) can be in how many positions at the same time?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-computer', 0, 1)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>Only ONE - it's either on OR off</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-computer', 1, 1)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>TWO - it can be on AND off at the same time</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-computer', 2, 1)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>Unlimited positions</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-computer-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>A "bit" is like a light switch</li>
+                        <li>It can only be OFF (0) or ON (1)</li>
+                        <li>Many switches together = bigger numbers</li>
+                        <li>Your computer has BILLIONS of these tiny switches!</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('welcome')">← Back</button>
+                    <button class="btn" onclick="completeLesson('what-is-computer', 'bits-and-bytes')">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- LESSON: Bits and Bytes -->
+            <div class="lesson" id="lesson-bits-and-bytes">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 2 → <span>More Switches = More Power</span></div>
+                    <h1>The Magic of Adding More Switches</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Easy</div>
+                        <div class="meta-item">⭐ +25 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">One light switch? Boring. But add more switches and you can do AMAZING things!</p>
+
+                <h2>Play With Two Switches</h2>
+
+                <p>With just 2 switches, you can make 4 different patterns. Click to see them all:</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">2-Bit Explorer</div>
+
+                    <div class="visual-demo">
+                        <div class="demo-item">
+                            <div class="demo-circle" id="twoBit0" style="width: 60px; height: 60px; font-size: 1.5rem;" onclick="cycleTwoBits()">0</div>
+                        </div>
+                        <div class="demo-item">
+                            <div class="demo-circle" id="twoBit1" style="width: 60px; height: 60px; font-size: 1.5rem;" onclick="cycleTwoBits()">0</div>
+                        </div>
+                        <div style="font-size: 1.5rem; color: var(--accent);">=</div>
+                        <div class="demo-item">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--purple);" id="twoBitDecimal">0</div>
+                            <div class="demo-label">decimal</div>
+                        </div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn" onclick="cycleTwoBits()">Next Combination →</button>
+                        <button class="gate-btn" onclick="resetTwoBits()">Reset</button>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <span id="twoBitProgress" style="color: var(--text-dim);">Combination 1 of 4</span>
+                    </div>
+                </div>
+
+                <h2>Here's the Cool Pattern</h2>
+
+                <div class="block success">
+                    <div class="block-title">📊 The Simple Rule</div>
+                    <p style="font-size: 1.3rem; text-align: center;">Every time you add 1 more switch, you <strong>DOUBLE</strong> the possibilities!</p>
+                    <p style="text-align: center; color: var(--text-secondary);">1 switch = 2 options. 2 switches = 4 options. 3 switches = 8 options...</p>
+                </div>
+
+                <h2>Watch It Grow!</h2>
+
+                <p>Drag the slider to add more switches and watch the number EXPLODE:</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">Bit Combination Calculator</div>
+
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <div style="font-size: 4rem; font-weight: bold; color: var(--accent);" id="combinationCount">2</div>
+                        <div style="color: var(--text-secondary);">possible combinations</div>
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <label style="color: var(--text-secondary);">Number of bits: <strong id="bitCountLabel">1</strong></label><br>
+                        <input type="range" min="1" max="10" value="1" id="bitSlider"
+                               style="width: 80%; max-width: 300px; margin-top: 0.5rem;"
+                               oninput="updateCombinations(this.value)">
+                    </div>
+
+                    <div style="text-align: center; font-family: monospace; color: var(--text-dim);">
+                        2<sup id="exponentDisplay">1</sup> = <span id="formulaResult">2</span>
+                    </div>
+                </div>
+
+                <div class="block warning">
+                    <div class="block-title">🤯 Here's Why Quantum Computers Are WILD</div>
+                    <p>Your normal computer can only try ONE combination at a time.</p>
+                    <p style="margin-top: 0.5rem;">But a quantum computer? It can try <strong>ALL combinations at the same time</strong>!</p>
+                    <p style="margin-top: 0.5rem; color: var(--yellow);">Imagine trying every possible answer to a puzzle... all at once. That's quantum!</p>
+                </div>
+
+                <h2>Your Turn!</h2>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Slide to 8 switches. How many patterns can you make?</div>
+                    <div class="challenge-status pending" id="combinationStatus">
+                        ⏳ Move the slider to 8 and find out!
+                    </div>
+                </div>
+
+                <h2>Quick Quiz!</h2>
+
+                <div class="quiz" id="quiz-bits">
+                    <div class="quiz-question">If you have 4 switches, how many different patterns can you make?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bits', 0, 2)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>4 patterns</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bits', 1, 2)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>8 patterns</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bits', 2, 2)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>16 patterns (2×2×2×2)</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-bits-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>More switches = WAY more possibilities</li>
+                        <li>Each new switch DOUBLES the patterns</li>
+                        <li>Normal computers: try one pattern at a time</li>
+                        <li>Quantum computers: try ALL patterns at once!</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('what-is-computer')">← Back</button>
+                    <button class="btn" onclick="completeLesson('bits-and-bytes', 'quantum-difference')">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- LESSON: The Quantum Difference -->
+            <div class="lesson" id="lesson-quantum-difference">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 3 → <span>The Spinning Coin</span></div>
+                    <h1>The Spinning Coin Trick</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Fun one!</div>
+                        <div class="meta-item">⭐ +30 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">Okay, here's where it gets WEIRD (in a good way!). Imagine a coin spinning in the air...</p>
+
+                <h2>Think About a Spinning Coin</h2>
+
+                <div class="analogy">
+                    <div class="analogy-title">The Coin Trick</div>
+                    <p><strong>A coin on a table</strong> = It's either HEADS or TAILS. You can see which one. This is like a normal bit.</p>
+                    <p style="margin-top: 1rem;"><strong>A spinning coin in the air</strong> = Is it heads? Is it tails? It's kind of... BOTH! Until it lands.</p>
+                    <p style="margin-top: 1rem; color: var(--yellow);"><strong>This "spinning coin" is called a QUBIT</strong> - it can be 0 AND 1 at the same time, until you look at it!</p>
+                </div>
+
+                <h2>Let's Compare!</h2>
+
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <div class="comparison-icon">🪙</div>
+                        <div class="comparison-title">Normal Switch (Bit)</div>
+                        <p style="color: var(--text-secondary); margin: 0;">Always OFF <strong>or</strong> ON</p>
+                    </div>
+                    <div class="comparison-item highlight">
+                        <div class="comparison-icon">🌀</div>
+                        <div class="comparison-title">Quantum Switch (Qubit)</div>
+                        <p style="color: var(--text-secondary); margin: 0;">Can be BOTH until you look!</p>
+                    </div>
+                </div>
+
+                <h2>Let's Try It!</h2>
+
+                <p>Click "Make it Spin" to put the qubit in superposition (both states). Then "Look at it" to make it choose!</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">Superposition Playground</div>
+
+                    <div class="visual-demo" style="flex-direction: column;">
+                        <div id="superpositionDemo" class="demo-circle off" style="width: 100px; height: 100px; font-size: 2.5rem;">0</div>
+                        <div id="superpositionLabel" style="color: var(--text-secondary); margin-top: 0.5rem;">Resting at 0 (like a coin showing heads)</div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn highlight" onclick="createSuperposition()">🌀 Make it Spin!</button>
+                        <button class="gate-btn" onclick="measureQubit()">👁️ Look at it!</button>
+                        <button class="gate-btn" onclick="resetSuperposition()">Reset</button>
+                    </div>
+
+                    <div id="measurementHistory" class="history-log" style="display: none;">
+                        <div style="color: var(--accent); margin-bottom: 0.5rem;">📊 What you saw:</div>
+                    </div>
+                </div>
+
+                <h2>Try This!</h2>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Make it spin 5 times and look at it each time. Notice something weird?</div>
+
+                    <div style="display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0;" id="measurementDots">
+                        <div class="measurement-dot" style="width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border);"></div>
+                        <div class="measurement-dot" style="width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border);"></div>
+                        <div class="measurement-dot" style="width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border);"></div>
+                        <div class="measurement-dot" style="width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border);"></div>
+                        <div class="measurement-dot" style="width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border);"></div>
+                    </div>
+
+                    <div class="challenge-status pending" id="randomStatus">
+                        ⏳ Spin it, then look. Do this 5 times!
+                    </div>
+                </div>
+
+                <div class="block success">
+                    <div class="block-title">🤯 Did You Notice?</div>
+                    <p>The answer is RANDOM every time! Sometimes 0, sometimes 1.</p>
+                    <p style="margin-top: 0.5rem;">The qubit doesn't "know" what it is until you look. It's truly both until that moment!</p>
+                </div>
+
+                <h2>Quick Quiz!</h2>
+
+                <div class="quiz" id="quiz-super">
+                    <div class="quiz-question">When you look at a spinning qubit, what happens?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-super', 0, 0)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>You somehow see BOTH 0 and 1</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-super', 1, 0)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>It picks one randomly - either 0 or 1</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-super', 2, 0)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>It stays spinning forever</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-super-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>A qubit is like a spinning coin</li>
+                        <li>It can be 0 AND 1 at the same time (we call this "superposition")</li>
+                        <li>When you look at it, it picks one randomly</li>
+                        <li>This randomness is REAL - not a trick!</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('bits-and-bytes')">← Back</button>
+                    <button class="btn" onclick="completeLesson('quantum-difference', 'probability-amplitudes')">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- LESSON: Probability Amplitudes -->
+            <div class="lesson" id="lesson-probability-amplitudes">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 4 → <span>Loaded Dice</span></div>
+                    <h1>Making a Weighted Coin</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Pretty cool!</div>
+                        <div class="meta-item">⭐ +35 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">Remember the spinning coin? What if we could make it land on heads MORE often? We can!</p>
+
+                <h2>Think About a Weighted Coin</h2>
+
+                <p>A fair coin lands on heads 50% of the time. But what if the coin was heavier on one side?</p>
+
+                <div class="analogy">
+                    <div class="analogy-title">The Weighted Coin</div>
+                    <p><strong>Fair coin:</strong> 50% heads, 50% tails</p>
+                    <p style="margin-top: 0.5rem;"><strong>Weighted coin:</strong> Maybe 75% heads, 25% tails</p>
+                    <p style="margin-top: 1rem; color: var(--yellow);">We can do the same thing with qubits! We can make it MORE likely to be 0 or MORE likely to be 1.</p>
+                </div>
+
+                <h2>Try It! Drag the Slider</h2>
+
+                <p>Move the slider to change how likely each result is:</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">Control the Amplitudes</div>
+
+                    <div class="amplitude-viz">
+                        <div class="amplitude-bar">
+                            <div class="amplitude-label">|0⟩</div>
+                            <div class="amplitude-container">
+                                <div class="amplitude-fill" id="ampFill0" style="height: 50%;"></div>
+                            </div>
+                            <div class="amplitude-value" id="ampVal0">50%</div>
+                        </div>
+                        <div class="amplitude-bar">
+                            <div class="amplitude-label">|1⟩</div>
+                            <div class="amplitude-container">
+                                <div class="amplitude-fill" id="ampFill1" style="height: 50%;"></div>
+                            </div>
+                            <div class="amplitude-value" id="ampVal1">50%</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <label style="color: var(--text-secondary);">How likely is 0?</label><br>
+                        <input type="range" min="0" max="100" value="50" id="ampSlider"
+                               style="width: 80%; max-width: 300px; margin-top: 0.5rem;"
+                               oninput="updateAmplitudes(this.value)">
+                    </div>
+
+                    <div class="state-display" id="ampStateDisplay" style="font-size: 1.2rem;">
+                        50% chance of 0, 50% chance of 1
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn" onclick="sampleAmplitudes()">🎲 Flip Once</button>
+                        <button class="gate-btn" onclick="sample100Amplitudes()">📊 Flip 100 Times!</button>
+                    </div>
+
+                    <div id="sampleResult" style="text-align: center; margin-top: 1rem; display: none;"></div>
+                </div>
+
+                <h2>Your Challenge!</h2>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Make the coin land on 0 about 75% of the time. Then flip 100 times to check!</div>
+                    <div class="challenge-status pending" id="biasStatus">
+                        ⏳ Set it to 75% and flip 100 times
+                    </div>
+                </div>
+
+                <div class="block info">
+                    <div class="block-title">🤔 Why Does This Matter?</div>
+                    <p>By controlling these probabilities, we can make quantum computers solve problems in clever ways.</p>
+                    <p style="margin-top: 0.5rem;">We "steer" the qubit toward the right answer!</p>
+                </div>
+
+                <h2>Quick Quiz!</h2>
+
+                <div class="quiz" id="quiz-amp">
+                    <div class="quiz-question">If we set a qubit to have 80% chance of being 1, what's the chance of getting 0?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-amp', 0, 0)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>20% (because 80 + 20 = 100)</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-amp', 1, 0)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>80%</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-amp', 2, 0)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>50%</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-amp-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>We can make qubits "weighted" - more likely to be 0 or 1</li>
+                        <li>The chances always add up to 100%</li>
+                        <li>This helps us guide quantum computers toward answers</li>
+                        <li>It's like having a magic coin we can control!</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('quantum-difference')">← Back</button>
+                    <button class="btn" onclick="completeLesson('probability-amplitudes', 'first-gate')">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- LESSON: First Gate -->
+            <div class="lesson" id="lesson-first-gate">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 5 → <span>Flipping Switches</span></div>
+                    <h1>How to Control Qubits</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Super fun!</div>
+                        <div class="meta-item">⭐ +30 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">Now let's learn how to actually DO stuff with qubits! We use special buttons called "gates".</p>
+
+                <h2>The Flip Button (X)</h2>
+
+                <p>The simplest gate is called "X". It just flips the qubit:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    <li>If it's 0, it becomes 1</li>
+                    <li>If it's 1, it becomes 0</li>
+                </ul>
+                <p>Easy, right? Try it!</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">X Gate Playground</div>
+
+                    <div class="visual-demo">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="xGateQubit" style="width: 80px; height: 80px; font-size: 2rem;">0</div>
+                            <div class="demo-label" id="xGateLabel">Currently: 0</div>
+                        </div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn highlight" onclick="applyXGate()">🔄 Flip It (X)</button>
+                        <button class="gate-btn" onclick="resetXGate()">Reset</button>
+                    </div>
+
+                    <div class="history-log" id="xGateHistory">
+                        <div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What you did:</div>
+                    </div>
+                </div>
+
+                <h2>The Magic H Button - Let's REALLY Understand It</h2>
+
+                <p>The H button is the MOST important thing in quantum computing. Let's break it down super carefully.</p>
+
+                <div class="analogy">
+                    <div class="analogy-title">Picture This...</div>
+                    <p>You have a coin sitting on the table, showing <strong>HEADS</strong>.</p>
+                    <p style="margin-top: 0.5rem;">Right now, if I ask "is it heads or tails?" - you KNOW it's heads. No mystery.</p>
+                    <p style="margin-top: 1rem;">Now... <strong>flick the coin into the air and let it SPIN</strong>.</p>
+                    <p style="margin-top: 0.5rem;">While it's spinning... is it heads? Is it tails? <span style="color: var(--yellow);">It's BOTH. It hasn't decided yet!</span></p>
+                </div>
+
+                <h3>That's Exactly What H Does!</h3>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>BEFORE pressing H</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">The qubit is definitely 0 (like a coin showing heads). We KNOW what it is.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>AFTER pressing H</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">The qubit is now SPINNING - it's both 0 AND 1 at the same time! We DON'T know what it is until we look.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>When you LOOK at it</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">The coin "lands" - it picks 0 or 1 randomly (50/50 chance). Like catching a spinning coin!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block warning">
+                    <div class="block-title">🤔 But WHY is this useful?</div>
+                    <p>Imagine you need to try 1000 different passwords to unlock something.</p>
+                    <p style="margin-top: 0.5rem;">Normal computer: Try one password, then another, then another... (slow!)</p>
+                    <p style="margin-top: 0.5rem; color: var(--yellow);">Quantum computer: The qubit is ALL passwords at once! Check them all together! (fast!)</p>
+                </div>
+
+                <h3>Try It Yourself - Step by Step</h3>
+
+                <div class="interactive">
+                    <div class="interactive-title">The H Button Experiment</div>
+
+                    <div class="visual-demo" style="flex-direction: column;">
+                        <div id="hGateQubit" class="demo-circle off" style="width: 100px; height: 100px; font-size: 2.5rem;">0</div>
+                        <div id="hGateLabel" style="color: var(--text-secondary); margin-top: 0.5rem;">Starting at 0</div>
+                    </div>
+
+                    <div style="background: var(--bg); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                        <p style="margin: 0; text-align: center;"><strong>Step 1:</strong> Press "Spin It" to make it uncertain</p>
+                        <p style="margin: 0.5rem 0 0; text-align: center;"><strong>Step 2:</strong> Press "Look at It" to see what you get!</p>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn highlight" onclick="applyHGate()">🌀 Spin It (H)</button>
+                        <button class="gate-btn" onclick="measureHGate()">👁️ Look at It</button>
+                        <button class="gate-btn" onclick="resetHGate()">Reset</button>
+                    </div>
+
+                    <div class="history-log" id="hGateHistory">
+                        <div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What happened:</div>
+                    </div>
+                </div>
+
+                <h3>The Weirdest Part - Press H TWICE!</h3>
+
+                <div class="analogy">
+                    <div class="analogy-title">Here's Something Wild...</div>
+                    <p>If you spin a coin in the air, and then <em>somehow</em> spin it AGAIN in the opposite direction while it's still in the air...</p>
+                    <p style="margin-top: 0.5rem; color: var(--yellow);">...the two spins CANCEL OUT, and it goes back to heads!</p>
+                    <p style="margin-top: 1rem;">That's exactly what happens with H. Press it twice → back to where you started!</p>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Press H twice (without looking in between). Watch what happens!</div>
+                    <div class="challenge-status pending" id="hhStatus">
+                        ⏳ Press H, then press H again!
+                    </div>
+                </div>
+
+                <div class="block success">
+                    <div class="block-title">🎯 Key Takeaway</div>
+                    <p><strong>H = "Make it uncertain"</strong></p>
+                    <p>It takes something definite (0 or 1) and makes it a mystery (could be either!).</p>
+                    <p style="margin-top: 0.5rem;">This uncertainty is the SECRET POWER of quantum computers.</p>
+                </div>
+
+                <h2>Build Your Own Circuit!</h2>
+
+                <p>Now for the fun part - drag the buttons onto the line to make your own quantum circuit:</p>
+
+                <div class="interactive">
+                    <div class="interactive-title">Circuit Builder</div>
+
+                    <div class="gate-palette">
+                        <div class="palette-gate" data-gate="X" draggable="true" ondragstart="dragGate(event)">X</div>
+                        <div class="palette-gate" data-gate="H" draggable="true" ondragstart="dragGate(event)">H</div>
+                        <div class="palette-gate" data-gate="Z" draggable="true" ondragstart="dragGate(event)">Z</div>
+                        <div class="palette-gate" data-gate="M" draggable="true" ondragstart="dragGate(event)">M</div>
+                    </div>
+
+                    <div class="circuit-builder" id="circuitBuilder">
+                        <div class="circuit-wire">
+                            <div class="wire-label">q0</div>
+                            <div class="wire-line" id="wireLine">
+                                <div class="drop-zone" ondragover="allowDrop(event)" ondrop="dropGate(event, 0)"></div>
+                                <div class="drop-zone" ondragover="allowDrop(event)" ondrop="dropGate(event, 1)"></div>
+                                <div class="drop-zone" ondragover="allowDrop(event)" ondrop="dropGate(event, 2)"></div>
+                                <div class="drop-zone" ondragover="allowDrop(event)" ondrop="dropGate(event, 3)"></div>
+                            </div>
+                            <div class="wire-output" id="circuitOutput">|0⟩</div>
+                        </div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn highlight" onclick="runCircuit()">Run Circuit ▶️</button>
+                        <button class="gate-btn" onclick="clearCircuit()">Clear</button>
+                    </div>
+
+                    <div class="state-display" id="circuitState">
+                        Start by dragging gates to the circuit!
+                    </div>
+                </div>
+
+                <h2>Quick Quiz!</h2>
+
+                <div class="quiz" id="quiz-xgate">
+                    <div class="quiz-question">If a qubit is 1, and you press X twice (flip, flip), what do you get?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-xgate', 0, 0)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>0</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-xgate', 1, 0)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>1 (back to where you started!)</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-xgate', 2, 0)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>Spinning</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-xgate-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>X button = flip (0 becomes 1, 1 becomes 0)</li>
+                        <li>H button = spin (makes it both 0 and 1)</li>
+                        <li>Press H twice = back to normal</li>
+                        <li>You can chain buttons to make "circuits"!</li>
+                    </ul>
+                </div>
+
+                <div class="celebration">
+                    <div class="celebration-icon">🎉</div>
+                    <h3>WOW! You Did It!</h3>
+                    <p style="color: var(--text-secondary);">You now understand the basics of quantum computing! That's AMAZING!</p>
+                    <p style="color: var(--text-secondary); margin-top: 1rem;">You learned about qubits, superposition, and quantum gates. Not bad for a beginner!</p>
+                    <div class="xp-gained">⭐ More adventures coming soon!</div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('probability-amplitudes')">← Back</button>
+                    <button class="btn" onclick="goToLesson('welcome')">
+                        Back to Start
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Course data
+        const modules = [
+            {
+                id: 'foundations',
+                title: 'The Basics',
+                icon: '📚',
+                lessons: [
+                    { id: 'welcome', title: 'Start Here!', xp: 0 },
+                    { id: 'what-is-computer', title: 'Light Switches', xp: 20 },
+                    { id: 'bits-and-bytes', title: 'More Switches', xp: 25 }
+                ]
+            },
+            {
+                id: 'quantum-basics',
+                title: 'Quantum Magic',
+                icon: '⚛️',
+                lessons: [
+                    { id: 'quantum-difference', title: 'The Spinning Coin', xp: 30 },
+                    { id: 'probability-amplitudes', title: 'Weighted Coins', xp: 35 }
+                ]
+            },
+            {
+                id: 'quantum-gates',
+                title: 'Control Buttons',
+                icon: '🔧',
+                lessons: [
+                    { id: 'first-gate', title: 'Flip & Spin', xp: 30 },
+                    { id: 'hadamard', title: 'More Buttons', xp: 40, locked: true },
+                    { id: 'phase-gates', title: 'Fancy Buttons', xp: 35, locked: true }
+                ]
+            },
+            {
+                id: 'multi-qubit',
+                title: 'Two Coins',
+                icon: '🔗',
+                lessons: [
+                    { id: 'two-qubits', title: 'Two at Once', xp: 40, locked: true },
+                    { id: 'cnot', title: 'Connected Coins', xp: 45, locked: true },
+                    { id: 'entanglement', title: 'Spooky Magic', xp: 50, locked: true }
+                ]
+            }
+        ];
+
+        let completedLessons = [];
+        let totalXP = 0;
+        let currentLesson = 'welcome';
+
+        // Welcome challenge
+        let welcomeClicks = 0;
+        function welcomeClick() {
+            welcomeClicks++;
+            const clicker = document.getElementById('welcomeClicker');
+            const count = document.getElementById('welcomeCount');
+            const label = document.getElementById('welcomeLabel');
+            const status = document.getElementById('welcomeStatus');
+            const complete = document.getElementById('welcomeComplete');
+
+            count.textContent = welcomeClicks;
+            label.textContent = `Clicks: ${welcomeClicks}/3`;
+
+            clicker.classList.add('celebrate');
+            setTimeout(() => clicker.classList.remove('celebrate'), 500);
+
+            if (welcomeClicks >= 3) {
+                clicker.classList.remove('off');
+                clicker.classList.add('on');
+                status.className = 'challenge-status success';
+                status.textContent = '✓ Perfect! You got it!';
+                complete.style.display = 'block';
+                showAchievement('🎯', 'First Click!', 'You completed your first challenge');
+            }
+        }
+
+        // Binary counter
+        function toggleBinaryBit(element) {
+            const value = element.querySelector('.value');
+            const isOn = element.classList.contains('on');
+
+            if (isOn) {
+                element.classList.remove('on');
+                value.textContent = '0';
+            } else {
+                element.classList.add('on');
+                value.textContent = '1';
+            }
+
+            element.classList.add('celebrate');
+            setTimeout(() => element.classList.remove('celebrate'), 300);
+
+            updateDecimalValue();
+        }
+
+        function updateDecimalValue() {
+            let total = 0;
+            document.querySelectorAll('.binary-bit').forEach(bit => {
+                if (bit.classList.contains('on')) {
+                    total += parseInt(bit.dataset.weight);
+                }
+            });
+            document.getElementById('decimalValue').textContent = total;
+
+            // Check if 13 is achieved
+            const status = document.getElementById('binaryStatus');
+            if (total === 13) {
+                status.className = 'challenge-status success';
+                status.textContent = '✓ Correct! 8 + 4 + 0 + 1 = 13';
+                showAchievement('🔢', 'Binary Master!', 'You encoded 13 in binary');
+            } else {
+                status.className = 'challenge-status pending';
+                status.textContent = `⏳ Current: ${total}. Target: 13 (hint: 8+4+0+1)`;
+            }
+        }
+
+        // Two bit explorer
+        let twoBitState = 0;
+        function cycleTwoBits() {
+            twoBitState = (twoBitState + 1) % 4;
+            const bit0 = document.getElementById('twoBit0');
+            const bit1 = document.getElementById('twoBit1');
+            const decimal = document.getElementById('twoBitDecimal');
+            const progress = document.getElementById('twoBitProgress');
+
+            const b0 = (twoBitState >> 1) & 1;
+            const b1 = twoBitState & 1;
+
+            bit0.textContent = b0;
+            bit0.className = 'demo-circle ' + (b0 ? 'on' : 'off');
+            bit1.textContent = b1;
+            bit1.className = 'demo-circle ' + (b1 ? 'on' : 'off');
+            decimal.textContent = twoBitState;
+            progress.textContent = `Combination ${twoBitState + 1} of 4`;
+
+            bit0.classList.add('celebrate');
+            bit1.classList.add('celebrate');
+            setTimeout(() => {
+                bit0.classList.remove('celebrate');
+                bit1.classList.remove('celebrate');
+            }, 300);
+        }
+
+        function resetTwoBits() {
+            twoBitState = -1;
+            cycleTwoBits();
+        }
+
+        // Combination calculator
+        function updateCombinations(value) {
+            const count = Math.pow(2, value);
+            document.getElementById('combinationCount').textContent = count.toLocaleString();
+            document.getElementById('bitCountLabel').textContent = value;
+            document.getElementById('exponentDisplay').textContent = value;
+            document.getElementById('formulaResult').textContent = count.toLocaleString();
+
+            // Check for 8-bit challenge
+            const status = document.getElementById('combinationStatus');
+            if (value == 8) {
+                status.className = 'challenge-status success';
+                status.textContent = '✓ Correct! 8 bits = 256 combinations (1 byte)';
+            } else {
+                status.className = 'challenge-status pending';
+                status.textContent = `⏳ Currently at ${value} bits. Set to 8!`;
+            }
+        }
+
+        // Initialize
+        function init() {
+            renderModuleList();
+            loadProgress();
+            goToLesson(currentLesson);
+        }
+
+        function renderModuleList() {
+            const list = document.getElementById('moduleList');
+            list.innerHTML = modules.map(module => `
+                <li class="module-item">
+                    <div class="module-header" onclick="toggleModule('${module.id}')">
+                        <div class="module-icon available">${module.icon}</div>
+                        <div class="module-info">
+                            <div class="module-title">${module.title}</div>
+                            <div class="module-status">${module.lessons.length} lessons</div>
+                        </div>
+                    </div>
+                    <ul class="lesson-list" id="lessons-${module.id}">
+                        ${module.lessons.map(lesson => `
+                            <li class="lesson-item ${lesson.locked ? 'locked' : ''} ${completedLessons.includes(lesson.id) ? 'completed' : ''}"
+                                onclick="${lesson.locked ? '' : `goToLesson('${lesson.id}')`}"
+                                data-lesson="${lesson.id}">
+                                ${lesson.locked ? '🔒 ' : ''}${lesson.title}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </li>
+            `).join('');
+        }
+
+        function toggleModule(moduleId) {
+            const lessons = document.getElementById(`lessons-${moduleId}`);
+            lessons.classList.toggle('show');
+        }
+
+        function goToLesson(lessonId) {
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            const lesson = document.getElementById(`lesson-${lessonId}`);
+            if (lesson) {
+                lesson.classList.add('active');
+                currentLesson = lessonId;
+            }
+
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.lesson === lessonId) {
+                    item.classList.add('active');
+                    item.parentElement.classList.add('show');
+                }
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        function completeLesson(lessonId, nextLessonId) {
+            if (!completedLessons.includes(lessonId)) {
+                completedLessons.push(lessonId);
+                modules.forEach(m => {
+                    m.lessons.forEach(l => {
+                        if (l.id === lessonId) totalXP += l.xp;
+                    });
+                });
+                saveProgress();
+                updateProgressDisplay();
+                renderModuleList();
+            }
+            goToLesson(nextLessonId);
+        }
+
+        function updateProgressDisplay() {
+            const totalLessons = modules.reduce((sum, m) => sum + m.lessons.filter(l => !l.locked).length, 0);
+            const percent = Math.round((completedLessons.length / totalLessons) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('xpCount').textContent = totalXP;
+        }
+
+        function saveProgress() {
+            localStorage.setItem('quasar-progress', JSON.stringify({ completedLessons, totalXP }));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('quasar-progress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                completedLessons = data.completedLessons || [];
+                totalXP = data.totalXP || 0;
+            }
+            updateProgressDisplay();
+        }
+
+        // Show achievement popup
+        function showAchievement(icon, title, desc) {
+            const popup = document.getElementById('achievement');
+            document.getElementById('achievementIcon').textContent = icon;
+            document.getElementById('achievementTitle').textContent = title;
+            document.getElementById('achievementDesc').textContent = desc;
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
+
+        // Toggle bit demo
+        let bitState = 0;
+        function toggleBitDemo() {
+            bitState = 1 - bitState;
+            const bit = document.getElementById('toggleBit');
+            const label = document.getElementById('toggleLabel');
+
+            if (bitState === 1) {
+                bit.classList.remove('off');
+                bit.classList.add('on');
+                bit.textContent = '1';
+                label.textContent = 'The bit is 1 (ON)';
+            } else {
+                bit.classList.remove('on');
+                bit.classList.add('off');
+                bit.textContent = '0';
+                label.textContent = 'The bit is 0 (OFF)';
+            }
+
+            bit.classList.add('celebrate');
+            setTimeout(() => bit.classList.remove('celebrate'), 300);
+        }
+
+        // Quiz handling
+        function checkQuiz(quizId, selectedIndex, correctIndex) {
+            const quiz = document.getElementById(quizId);
+            const options = quiz.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById(quizId + '-feedback');
+
+            options.forEach((opt, i) => {
+                opt.style.pointerEvents = 'none';
+                if (i === correctIndex) opt.classList.add('correct');
+                else if (i === selectedIndex) opt.classList.add('incorrect');
+            });
+
+            feedback.classList.add('show');
+            if (selectedIndex === correctIndex) {
+                feedback.classList.add('correct');
+                feedback.innerHTML = '✓ Correct! Well done.';
+            } else {
+                feedback.classList.add('incorrect');
+                feedback.innerHTML = '✗ Not quite. The correct answer is highlighted.';
+            }
+        }
+
+        // Superposition demo
+        let superpositionState = 'classical';
+        let measurementCount = 0;
+
+        function createSuperposition() {
+            superpositionState = 'super';
+            const demo = document.getElementById('superpositionDemo');
+            const label = document.getElementById('superpositionLabel');
+
+            demo.classList.remove('off', 'on');
+            demo.classList.add('superposition');
+            demo.textContent = '?';
+            label.textContent = 'Spinning! (Both 0 AND 1 right now)';
+
+            document.getElementById('measurementHistory').style.display = 'block';
+        }
+
+        function measureQubit() {
+            if (superpositionState !== 'super') {
+                const demo = document.getElementById('superpositionDemo');
+                demo.classList.add('shake');
+                setTimeout(() => demo.classList.remove('shake'), 300);
+                return;
+            }
+
+            const demo = document.getElementById('superpositionDemo');
+            const label = document.getElementById('superpositionLabel');
+            const history = document.getElementById('measurementHistory');
+
+            const outcome = Math.random() < 0.5 ? 0 : 1;
+
+            demo.classList.remove('superposition');
+            demo.classList.add(outcome === 0 ? 'off' : 'on', 'measuring');
+            demo.textContent = outcome;
+            label.textContent = `It landed on: ${outcome}!`;
+
+            setTimeout(() => demo.classList.remove('measuring'), 500);
+
+            // Add to history
+            history.innerHTML += `<div class="history-entry">You looked → Got <span class="result">${outcome}</span></div>`;
+
+            // Update dots
+            const dots = document.querySelectorAll('.measurement-dot');
+            if (measurementCount < 5) {
+                dots[measurementCount].style.background = outcome === 0 ? 'var(--accent)' : 'var(--purple)';
+                dots[measurementCount].style.borderColor = outcome === 0 ? 'var(--accent)' : 'var(--purple)';
+                dots[measurementCount].textContent = outcome;
+                dots[measurementCount].style.display = 'flex';
+                dots[measurementCount].style.alignItems = 'center';
+                dots[measurementCount].style.justifyContent = 'center';
+                dots[measurementCount].style.fontWeight = 'bold';
+                dots[measurementCount].style.color = 'white';
+                measurementCount++;
+            }
+
+            // Check challenge
+            if (measurementCount >= 5) {
+                const status = document.getElementById('randomStatus');
+                status.className = 'challenge-status success';
+                status.textContent = '✓ See? It\'s random every time! That\'s real quantum weirdness!';
+                showAchievement('🎲', 'Quantum Explorer!', 'You discovered quantum randomness');
+            }
+
+            superpositionState = 'measured';
+        }
+
+        function resetSuperposition() {
+            superpositionState = 'classical';
+            const demo = document.getElementById('superpositionDemo');
+            const label = document.getElementById('superpositionLabel');
+            const history = document.getElementById('measurementHistory');
+
+            demo.classList.remove('on', 'superposition');
+            demo.classList.add('off');
+            demo.textContent = '0';
+            label.textContent = 'Resting at 0 (like a coin showing heads)';
+            history.innerHTML = '<div style="color: var(--accent); margin-bottom: 0.5rem;">📊 What you saw:</div>';
+        }
+
+        // Amplitude slider
+        let sample100Done = false;
+        function updateAmplitudes(value) {
+            const prob0 = value / 100;
+            const prob1 = 1 - prob0;
+
+            document.getElementById('ampFill0').style.height = (prob0 * 100) + '%';
+            document.getElementById('ampFill1').style.height = (prob1 * 100) + '%';
+            document.getElementById('ampVal0').textContent = Math.round(prob0 * 100) + '%';
+            document.getElementById('ampVal1').textContent = Math.round(prob1 * 100) + '%';
+
+            document.getElementById('ampStateDisplay').textContent = `${Math.round(prob0 * 100)}% chance of 0, ${Math.round(prob1 * 100)}% chance of 1`;
+        }
+
+        function sampleAmplitudes() {
+            const prob0 = document.getElementById('ampSlider').value / 100;
+            const outcome = Math.random() < prob0 ? 0 : 1;
+            document.getElementById('sampleResult').style.display = 'block';
+            document.getElementById('sampleResult').innerHTML = `<span style="font-size: 2rem;">You got: ${outcome}!</span>`;
+        }
+
+        function sample100Amplitudes() {
+            const prob0 = document.getElementById('ampSlider').value / 100;
+            let count0 = 0;
+            for (let i = 0; i < 100; i++) {
+                if (Math.random() < prob0) count0++;
+            }
+            document.getElementById('sampleResult').style.display = 'block';
+            document.getElementById('sampleResult').innerHTML = `
+                <div>Flipped 100 times: Got <strong>${count0}</strong> zeros and <strong>${100-count0}</strong> ones</div>
+                <div style="color: var(--text-dim);">Expected about ${Math.round(prob0*100)} zeros and ${Math.round((1-prob0)*100)} ones</div>
+            `;
+
+            // Check bias challenge
+            if (prob0 >= 0.74 && prob0 <= 0.76 && !sample100Done) {
+                sample100Done = true;
+                const status = document.getElementById('biasStatus');
+                status.className = 'challenge-status success';
+                status.textContent = '✓ Perfect! You made a weighted coin!';
+                showAchievement('⚖️', 'Coin Master!', 'You controlled the odds!');
+            }
+        }
+
+        // X Gate demo
+        let xGateState = 0;
+        function applyXGate() {
+            xGateState = 1 - xGateState;
+            const qubit = document.getElementById('xGateQubit');
+            const label = document.getElementById('xGateLabel');
+            const history = document.getElementById('xGateHistory');
+
+            qubit.classList.add('celebrate');
+            setTimeout(() => qubit.classList.remove('celebrate'), 300);
+
+            if (xGateState === 1) {
+                qubit.classList.remove('off');
+                qubit.classList.add('on');
+                qubit.textContent = '1';
+                label.textContent = 'Now it\'s 1!';
+            } else {
+                qubit.classList.remove('on');
+                qubit.classList.add('off');
+                qubit.textContent = '0';
+                label.textContent = 'Now it\'s 0!';
+            }
+
+            history.innerHTML += `<div class="history-entry">Flipped → Now <span class="result">${xGateState}</span></div>`;
+        }
+
+        function resetXGate() {
+            xGateState = 0;
+            const qubit = document.getElementById('xGateQubit');
+            const label = document.getElementById('xGateLabel');
+            const history = document.getElementById('xGateHistory');
+
+            qubit.classList.remove('on');
+            qubit.classList.add('off');
+            qubit.textContent = '0';
+            label.textContent = 'Starting at 0';
+            history.innerHTML = '<div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What you did:</div>';
+        }
+
+        // H Gate demo
+        let hGateState = 'zero'; // zero, one, super-plus, super-minus
+        let hGateApplications = 0;
+
+        function applyHGate() {
+            const qubit = document.getElementById('hGateQubit');
+            const label = document.getElementById('hGateLabel');
+            const history = document.getElementById('hGateHistory');
+
+            qubit.classList.add('celebrate');
+            setTimeout(() => qubit.classList.remove('celebrate'), 300);
+
+            if (hGateState === 'zero') {
+                hGateState = 'super-plus';
+                qubit.classList.remove('off', 'on');
+                qubit.classList.add('superposition');
+                qubit.textContent = '?';
+                label.textContent = 'Now it\'s SPINNING (both 0 and 1)!';
+                history.innerHTML += `<div class="history-entry">Made it spin! → <span class="result">?</span></div>`;
+            } else if (hGateState === 'super-plus') {
+                hGateState = 'zero';
+                qubit.classList.remove('superposition');
+                qubit.classList.add('off');
+                qubit.textContent = '0';
+                label.textContent = 'Back to 0! (H + H cancels out!)';
+                history.innerHTML += `<div class="history-entry">Spun again → <span class="result">Back to 0!</span></div>`;
+
+                // Check HH challenge
+                hGateApplications++;
+                if (hGateApplications >= 1) {
+                    const status = document.getElementById('hhStatus');
+                    status.className = 'challenge-status success';
+                    status.textContent = '✓ Whoa! Pressing H twice brings it back! That\'s the magic of quantum!';
+                    showAchievement('🔄', 'Double Spin!', 'H + H = back to start!');
+                }
+            } else if (hGateState === 'one') {
+                hGateState = 'super-minus';
+                qubit.classList.remove('off', 'on');
+                qubit.classList.add('superposition');
+                qubit.textContent = '?';
+                label.textContent = 'Now it\'s SPINNING!';
+            } else if (hGateState === 'super-minus') {
+                hGateState = 'one';
+                qubit.classList.remove('superposition');
+                qubit.classList.add('on');
+                qubit.textContent = '1';
+                label.textContent = 'Back to 1!';
+            }
+        }
+
+        function measureHGate() {
+            if (hGateState !== 'super-plus' && hGateState !== 'super-minus') {
+                return;
+            }
+
+            const qubit = document.getElementById('hGateQubit');
+            const label = document.getElementById('hGateLabel');
+            const history = document.getElementById('hGateHistory');
+
+            const outcome = Math.random() < 0.5 ? 0 : 1;
+            hGateState = outcome === 0 ? 'zero' : 'one';
+
+            qubit.classList.remove('superposition');
+            qubit.classList.add(outcome === 0 ? 'off' : 'on', 'measuring');
+            qubit.textContent = outcome;
+            label.textContent = `You looked! It's ${outcome}!`;
+
+            setTimeout(() => qubit.classList.remove('measuring'), 500);
+
+            history.innerHTML += `<div class="history-entry">Looked → Got <span class="result">${outcome}</span></div>`;
+        }
+
+        function resetHGate() {
+            hGateState = 'zero';
+            const qubit = document.getElementById('hGateQubit');
+            const label = document.getElementById('hGateLabel');
+            const history = document.getElementById('hGateHistory');
+
+            qubit.classList.remove('on', 'superposition');
+            qubit.classList.add('off');
+            qubit.textContent = '0';
+            label.textContent = 'Starting at 0';
+            history.innerHTML = '<div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What you did:</div>';
+        }
+
+        // Circuit Builder
+        let circuitGates = [null, null, null, null];
+
+        function dragGate(event) {
+            event.dataTransfer.setData('gate', event.target.dataset.gate);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            event.target.classList.add('dragover');
+        }
+
+        function dropGate(event, position) {
+            event.preventDefault();
+            event.target.classList.remove('dragover');
+            const gate = event.dataTransfer.getData('gate');
+
+            circuitGates[position] = gate;
+            event.target.classList.add('filled');
+            event.target.textContent = gate;
+        }
+
+        function clearCircuit() {
+            circuitGates = [null, null, null, null];
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('filled');
+                zone.textContent = '';
+            });
+            document.getElementById('circuitOutput').textContent = '0';
+            document.getElementById('circuitState').textContent = 'Drag buttons onto the line to build your circuit!';
+        }
+
+        function runCircuit() {
+            let state = { amp0: 1, amp1: 0, superposition: false };
+            let log = '|0⟩';
+
+            circuitGates.forEach(gate => {
+                if (!gate) return;
+
+                if (gate === 'X') {
+                    [state.amp0, state.amp1] = [state.amp1, state.amp0];
+                    log += ` → X`;
+                } else if (gate === 'H') {
+                    if (!state.superposition) {
+                        if (state.amp0 === 1) {
+                            state.amp0 = 0.707;
+                            state.amp1 = 0.707;
+                        } else {
+                            state.amp0 = 0.707;
+                            state.amp1 = -0.707;
+                        }
+                        state.superposition = true;
+                    } else {
+                        // H on superposition
+                        const newAmp0 = (state.amp0 + state.amp1) * 0.707;
+                        const newAmp1 = (state.amp0 - state.amp1) * 0.707;
+                        state.amp0 = Math.abs(newAmp0) < 0.01 ? 0 : (newAmp0 > 0 ? 1 : -1) * Math.abs(Math.round(newAmp0));
+                        state.amp1 = Math.abs(newAmp1) < 0.01 ? 0 : (newAmp1 > 0 ? 1 : -1) * Math.abs(Math.round(newAmp1));
+                        if (state.amp0 === 1 || state.amp0 === -1) state.superposition = false;
+                    }
+                    log += ` → H`;
+                } else if (gate === 'Z') {
+                    state.amp1 = -state.amp1;
+                    log += ` → Z`;
+                } else if (gate === 'M') {
+                    const prob0 = state.amp0 * state.amp0;
+                    const outcome = Math.random() < prob0 ? 0 : 1;
+                    state.amp0 = outcome === 0 ? 1 : 0;
+                    state.amp1 = outcome === 0 ? 0 : 1;
+                    state.superposition = false;
+                    log += ` → M(${outcome})`;
+                }
+            });
+
+            // Update output
+            let outputText;
+            if (state.superposition) {
+                const sign = state.amp1 >= 0 ? '+' : '-';
+                outputText = `${state.amp0.toFixed(2)}|0⟩ ${sign} ${Math.abs(state.amp1).toFixed(2)}|1⟩`;
+            } else {
+                outputText = state.amp0 === 1 ? '|0⟩' : '|1⟩';
+            }
+
+            document.getElementById('circuitOutput').textContent = state.superposition ? '?' : (state.amp0 === 1 ? '0' : '1');
+            document.getElementById('circuitState').innerHTML = `<strong>Result:</strong> ${outputText}<br><span style="color: var(--text-dim);">${log}</span>`;
+
+            // Animate the circuit
+            document.querySelectorAll('.drop-zone.filled').forEach((zone, i) => {
+                setTimeout(() => {
+                    zone.classList.add('highlight');
+                    setTimeout(() => zone.classList.remove('highlight'), 300);
+                }, i * 200);
+            });
+        }
+
+        // Initialize on load
+        init();
+
+        // Add dragover listener removal
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+        });
+    </script>
+</body>
+</html>
