@@ -66,6 +66,9 @@ The course covers:
 - ⚖️ **Weighted coins** - Controlling probabilities
 - 🔘 **The H button** - The most important quantum operation
 - 🔧 **Building circuits** - Putting it all together
+- 🔗 **Two qubits** - Double the quantum power!
+- ⚡ **CNOT gate** - Making qubits work together
+- 🔮 **Entanglement** - The spookiest thing in physics!
 
 No math prerequisites. No physics degree needed. Just curiosity!
 
@@ -137,8 +140,9 @@ open docs/learn/course.html
 
 ### What We're Building 🚧
 
-- [ ] More interactive examples in the course
-- [ ] Two-qubit entanglement lesson
+- [x] Two-qubit lesson (just added!)
+- [x] CNOT gate lesson (just added!)
+- [x] Entanglement lesson (just added!)
 - [ ] Python bindings
 - [ ] Browser/WASM support
 - [ ] GPU acceleration

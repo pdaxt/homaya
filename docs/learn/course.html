@@ -2072,8 +2072,442 @@
 
                 <div class="lesson-nav">
                     <button class="btn btn-secondary" onclick="goToLesson('probability-amplitudes')">← Back</button>
+                    <button class="btn" onclick="goToLesson('two-qubits')">
+                        Next: Two Coins! →
+                    </button>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- LESSON: Two Qubits - "Two at Once"                              -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <div class="lesson" id="lesson-two-qubits">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 6 → <span>Two Coins</span></div>
+                    <h1>What If We Have TWO Spinning Coins?</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Mind-bending!</div>
+                        <div class="meta-item">⭐ +40 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">One spinning coin is cool. But TWO spinning coins? That's where the REAL magic begins!</p>
+
+                <h2>Regular Coins First</h2>
+
+                <div class="analogy">
+                    <div class="analogy-title">Imagine This...</div>
+                    <p>You have <strong>two regular coins</strong> on a table.</p>
+                    <p style="margin-top: 0.5rem;">Coin A is showing <span style="color: var(--accent);">HEADS</span></p>
+                    <p>Coin B is showing <span style="color: var(--yellow);">TAILS</span></p>
+                    <p style="margin-top: 1rem;">How many ways can two coins land? Let's count:</p>
+                </div>
+
+                <div class="block info">
+                    <div class="block-title">🪙 Two Coin Possibilities</div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+                        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.5rem;">⚪ ⚪</div>
+                            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Heads + Heads</div>
+                            <div style="font-family: monospace; color: var(--accent);">0 0</div>
+                        </div>
+                        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.5rem;">⚪ ⚫</div>
+                            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Heads + Tails</div>
+                            <div style="font-family: monospace; color: var(--accent);">0 1</div>
+                        </div>
+                        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.5rem;">⚫ ⚪</div>
+                            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Tails + Heads</div>
+                            <div style="font-family: monospace; color: var(--accent);">1 0</div>
+                        </div>
+                        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.5rem;">⚫ ⚫</div>
+                            <div style="color: var(--text-secondary); margin-top: 0.5rem;">Tails + Tails</div>
+                            <div style="font-family: monospace; color: var(--accent);">1 1</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; text-align: center; color: var(--yellow);">2 coins = 4 possibilities! (2 × 2 = 4)</p>
+                </div>
+
+                <h2>Now Let's Spin BOTH Coins!</h2>
+
+                <p>Remember what happens when you spin ONE coin? It's both heads AND tails at the same time.</p>
+                <p style="margin-top: 0.5rem;">Now imagine spinning BOTH coins together...</p>
+
+                <div class="block warning">
+                    <div class="block-title">🤯 Here's the Mind-Blowing Part</div>
+                    <p>Two spinning coins are in ALL FOUR states at once:</p>
+                    <p style="margin-top: 0.5rem; color: var(--accent);">Heads-Heads AND Heads-Tails AND Tails-Heads AND Tails-Tails</p>
+                    <p style="margin-top: 1rem;">All happening simultaneously! Until you look at them.</p>
+                </div>
+
+                <div class="interactive">
+                    <div class="interactive-title">Two-Qubit Playground</div>
+
+                    <div class="visual-demo" style="gap: 2rem;">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="qubitA" style="width: 70px; height: 70px; font-size: 1.5rem;">0</div>
+                            <div class="demo-label">Qubit A</div>
+                        </div>
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="qubitB" style="width: 70px; height: 70px; font-size: 1.5rem;">0</div>
+                            <div class="demo-label">Qubit B</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <div style="font-size: 1.2rem; font-family: monospace;" id="twoQubitState">State: |00⟩</div>
+                        <div style="color: var(--text-secondary); margin-top: 0.5rem;" id="twoQubitMeaning">Both are 0</div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn" onclick="flipQubitA()">Flip A</button>
+                        <button class="gate-btn" onclick="flipQubitB()">Flip B</button>
+                        <button class="gate-btn highlight" onclick="spinBothQubits()">🌀 Spin Both!</button>
+                        <button class="gate-btn" onclick="measureBothQubits()">👁️ Look!</button>
+                        <button class="gate-btn" onclick="resetTwoQubits()">Reset</button>
+                    </div>
+
+                    <div class="challenge">
+                        <div class="challenge-goal">Click "Spin Both" then "Look" a few times. What do you notice?</div>
+                        <div class="challenge-status pending" id="twoQubitStatus">
+                            ⏳ Try it multiple times to see all 4 possibilities!
+                        </div>
+                    </div>
+                </div>
+
+                <h2>The Power of Two</h2>
+
+                <p>With regular bits:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    <li>2 bits can store ONE of 4 values (like 00, or 01, or 10, or 11)</li>
+                </ul>
+
+                <p>With quantum bits (qubits):</p>
+                <ul style="margin-left: 1.5rem; color: var(--yellow); margin-bottom: 1rem;">
+                    <li>2 qubits can be ALL 4 values at the same time!</li>
+                </ul>
+
+                <div class="block success">
+                    <div class="block-title">🚀 Why This Matters</div>
+                    <p>Add more qubits, and the possibilities EXPLODE:</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>3 qubits = 8 possibilities at once</li>
+                        <li>10 qubits = 1,024 possibilities at once</li>
+                        <li>50 qubits = more possibilities than atoms on Earth!</li>
+                    </ul>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>Two coins = 4 possible combinations</li>
+                        <li>Two SPINNING coins = all 4 at once!</li>
+                        <li>More qubits = exponentially more power</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('first-gate')">← Back</button>
+                    <button class="btn" onclick="goToLesson('cnot')">
+                        Next: Connected Coins! →
+                    </button>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- LESSON: CNOT - "Connected Coins"                                -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <div class="lesson" id="lesson-cnot">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 7 → <span>Connected Coins</span></div>
+                    <h1>Making One Coin Control Another</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 Getting powerful!</div>
+                        <div class="meta-item">⭐ +45 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">What if flipping one coin AUTOMATICALLY flipped another? That's what the CNOT gate does!</p>
+
+                <h2>The "Buddy System"</h2>
+
+                <div class="analogy">
+                    <div class="analogy-title">Imagine This...</div>
+                    <p>You and your friend are playing a game with special rules:</p>
+                    <p style="margin-top: 0.5rem; color: var(--accent);">👤 If YOU raise your hand → your friend MUST wave</p>
+                    <p style="margin-top: 0.5rem;">👤 If you DON'T raise your hand → your friend does nothing</p>
+                    <p style="margin-top: 1rem;">Your hand is the <strong>CONTROL</strong>. Your friend's wave is the <strong>TARGET</strong>.</p>
+                </div>
+
+                <h2>Meet the CNOT Gate</h2>
+
+                <p><strong>CNOT</strong> stands for <strong>Controlled-NOT</strong>. Here's what it does:</p>
+
+                <div class="block info">
+                    <div class="block-title">🎛️ The CNOT Rule</div>
+                    <p style="font-size: 1.2rem; color: var(--yellow); margin-top: 0.5rem;">
+                        IF the control qubit is 1 → FLIP the target qubit
+                    </p>
+                    <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                        IF the control qubit is 0 → do nothing
+                    </p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Control = 0, Target = 0</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">Control is OFF, so nothing happens → stays |00⟩</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Control = 0, Target = 1</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">Control is OFF, so nothing happens → stays |01⟩</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Control = 1, Target = 0</h4>
+                            <p style="margin: 0; color: var(--yellow);">Control is ON! Target flips → becomes |11⟩</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Control = 1, Target = 1</h4>
+                            <p style="margin: 0; color: var(--yellow);">Control is ON! Target flips → becomes |10⟩</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive">
+                    <div class="interactive-title">CNOT Playground</div>
+
+                    <div class="visual-demo" style="gap: 2rem; align-items: center;">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="cnotControl" style="width: 70px; height: 70px; font-size: 1.5rem; border: 3px solid var(--accent);">0</div>
+                            <div class="demo-label" style="color: var(--accent);">Control (A)</div>
+                        </div>
+                        <div style="font-size: 2rem; color: var(--text-dim);">→</div>
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="cnotTarget" style="width: 70px; height: 70px; font-size: 1.5rem; border: 3px solid var(--yellow);">0</div>
+                            <div class="demo-label" style="color: var(--yellow);">Target (B)</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <div style="font-size: 1.2rem; font-family: monospace;" id="cnotState">State: |00⟩</div>
+                        <div style="color: var(--text-secondary); margin-top: 0.5rem;" id="cnotExplain">Control=0, so target stays the same</div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn" onclick="toggleCnotControl()">Flip Control</button>
+                        <button class="gate-btn" onclick="toggleCnotTarget()">Flip Target</button>
+                        <button class="gate-btn highlight" onclick="applyCnot()">⚡ Apply CNOT!</button>
+                        <button class="gate-btn" onclick="resetCnot()">Reset</button>
+                    </div>
+
+                    <div class="history-log" id="cnotHistory">
+                        <div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What happened:</div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-goal">Set control to 1, target to 0, then apply CNOT. What happens to target?</div>
+                    <div class="challenge-status pending" id="cnotChallenge">
+                        ⏳ Try it!
+                    </div>
+                </div>
+
+                <div class="block warning">
+                    <div class="block-title">🤔 Why Does This Matter?</div>
+                    <p>CNOT lets qubits <strong>talk to each other</strong>!</p>
+                    <p style="margin-top: 0.5rem;">One qubit can control what happens to another. This is how we make qubits work TOGETHER to solve problems.</p>
+                    <p style="margin-top: 1rem; color: var(--yellow);">And when combined with H... something MAGICAL happens. Let's see!</p>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>CNOT = Controlled-NOT</li>
+                        <li>If control = 1, target flips</li>
+                        <li>If control = 0, nothing happens</li>
+                        <li>This lets qubits work together!</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('two-qubits')">← Back</button>
+                    <button class="btn" onclick="goToLesson('entanglement')">
+                        Next: Spooky Magic! →
+                    </button>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- LESSON: Entanglement - "Spooky Magic"                           -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <div class="lesson" id="lesson-entanglement">
+                <div class="lesson-header">
+                    <div class="breadcrumb">Chapter 8 → <span>Spooky Magic</span></div>
+                    <h1>Entanglement: The Weirdest Thing in the Universe</h1>
+                    <div class="lesson-meta">
+                        <div class="meta-item">📚 LEGENDARY!</div>
+                        <div class="meta-item">⭐ +50 XP</div>
+                    </div>
+                </div>
+
+                <p class="lead">Einstein called this "spooky action at a distance." It's the most mind-blowing thing in physics!</p>
+
+                <h2>The Setup</h2>
+
+                <div class="analogy">
+                    <div class="analogy-title">Let's Do Something WILD...</div>
+                    <p>Take two qubits. Start with both at 0.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Step 1:</strong> Press H on the first qubit (make it spin)</p>
+                    <p><strong>Step 2:</strong> Apply CNOT with first as control, second as target</p>
+                    <p style="margin-top: 1rem; color: var(--purple);">What happens? Let's find out...</p>
+                </div>
+
+                <div class="interactive">
+                    <div class="interactive-title">🔮 Create an Entangled Pair (Bell State)</div>
+
+                    <div class="visual-demo" style="gap: 2rem; align-items: center;">
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="bellA" style="width: 80px; height: 80px; font-size: 1.8rem;">0</div>
+                            <div class="demo-label">Qubit A</div>
+                        </div>
+                        <div id="bellLink" style="font-size: 1.5rem; color: var(--text-dim);">. . .</div>
+                        <div class="demo-item">
+                            <div class="demo-circle off" id="bellB" style="width: 80px; height: 80px; font-size: 1.8rem;">0</div>
+                            <div class="demo-label">Qubit B</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: var(--bg); border-radius: 10px;">
+                        <div style="font-size: 1.2rem;" id="bellStateDisplay">Both qubits are |0⟩</div>
+                        <div style="color: var(--text-secondary); margin-top: 0.5rem;" id="bellExplain">Ready to entangle!</div>
+                    </div>
+
+                    <div class="gate-controls">
+                        <button class="gate-btn highlight" onclick="createBellState()">✨ Entangle Them!</button>
+                        <button class="gate-btn" onclick="measureBellState()">👁️ Look at Both</button>
+                        <button class="gate-btn" onclick="resetBellState()">Reset</button>
+                    </div>
+
+                    <div class="history-log" id="bellHistory">
+                        <div style="color: var(--purple); margin-bottom: 0.5rem;">📝 Observations:</div>
+                    </div>
+                </div>
+
+                <h2>Did You Notice Something WEIRD?</h2>
+
+                <div class="block warning">
+                    <div class="block-title">🤯 THE SPOOKY PART</div>
+                    <p>After entangling, click "Look at Both" several times. You'll ONLY see:</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li style="color: var(--green);">Both 0 (|00⟩)</li>
+                        <li style="color: var(--green);">Both 1 (|11⟩)</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: var(--yellow); font-size: 1.2rem;">
+                        You will NEVER see one 0 and one 1!
+                    </p>
+                    <p style="margin-top: 0.5rem;">They ALWAYS match. Every. Single. Time.</p>
+                </div>
+
+                <h2>Why Is This "Spooky"?</h2>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>They're Truly Random</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">Neither qubit "knows" if it will be 0 or 1 until you look. It's genuinely random.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>But They're Perfectly Correlated</h4>
+                            <p style="margin: 0; color: var(--text-secondary);">Somehow, when you look at one, the other INSTANTLY "knows" to match it.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Distance Doesn't Matter</h4>
+                            <p style="margin: 0; color: var(--yellow);">They could be across the room... or across the GALAXY. They still match instantly!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analogy">
+                    <div class="analogy-title">The Magic Gloves Analogy</div>
+                    <p>Imagine you have two magic gloves - one left, one right. You put them in separate boxes WITHOUT looking.</p>
+                    <p style="margin-top: 0.5rem;">Send one box to the Moon. 🌙</p>
+                    <p style="margin-top: 0.5rem;">Open the box on Earth. You see: LEFT glove!</p>
+                    <p style="margin-top: 0.5rem; color: var(--accent);">Instantly, you KNOW the Moon box has the RIGHT glove.</p>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">But wait... with normal gloves, they were already decided when you separated them.</p>
+                    <p style="margin-top: 1rem; color: var(--yellow);">With quantum entanglement: <strong>NEITHER glove was left or right until you looked!</strong> They were BOTH somehow both! And looking at one instantly "decided" the other!</p>
+                </div>
+
+                <div class="block success">
+                    <div class="block-title">🏆 Why Entanglement Is AMAZING</div>
+                    <ul style="margin-left: 1.5rem;">
+                        <li><strong>Quantum Teleportation:</strong> "Beam" quantum information across space</li>
+                        <li><strong>Quantum Cryptography:</strong> Unbreakable secret codes</li>
+                        <li><strong>Quantum Computing:</strong> Massive parallel processing power</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: var(--accent);">Entanglement is what makes quantum computers so powerful!</p>
+                </div>
+
+                <div class="quiz" id="quiz-bell">
+                    <div class="quiz-question">After entangling two qubits and measuring, which results are possible?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bell', 0, 1)">
+                            <div class="quiz-option-letter">A</div>
+                            <span>|00⟩, |01⟩, |10⟩, or |11⟩ (any of the four)</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bell', 1, 1)">
+                            <div class="quiz-option-letter">B</div>
+                            <span>Only |00⟩ or |11⟩ (they MUST match!)</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkQuiz('quiz-bell', 2, 1)">
+                            <div class="quiz-option-letter">C</div>
+                            <span>Only |01⟩ or |10⟩ (they MUST be opposite)</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-bell-feedback"></div>
+                </div>
+
+                <div class="recap">
+                    <div class="recap-title">📝 What You Just Learned!</div>
+                    <ul class="recap-list">
+                        <li>H + CNOT creates an "entangled" pair</li>
+                        <li>Entangled qubits ALWAYS match when measured</li>
+                        <li>This works instantly, no matter the distance</li>
+                        <li>This is the foundation of quantum computing!</li>
+                    </ul>
+                </div>
+
+                <div class="celebration">
+                    <div class="celebration-icon">🎊</div>
+                    <h3>YOU DID IT!</h3>
+                    <p style="color: var(--text-secondary);">You just learned about quantum entanglement - one of the most mind-bending concepts in all of physics!</p>
+                    <p style="color: var(--text-secondary); margin-top: 1rem;">Einstein struggled with this idea. And you understand it now!</p>
+                    <div class="xp-gained">⭐ +50 XP - Quantum Master!</div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="btn btn-secondary" onclick="goToLesson('cnot')">← Back</button>
                     <button class="btn" onclick="goToLesson('welcome')">
-                        Back to Start
+                        🏠 Back to Start
                     </button>
                 </div>
             </div>
@@ -2118,9 +2552,9 @@
                 title: 'Two Coins',
                 icon: '🔗',
                 lessons: [
-                    { id: 'two-qubits', title: 'Two at Once', xp: 40, locked: true },
-                    { id: 'cnot', title: 'Connected Coins', xp: 45, locked: true },
-                    { id: 'entanglement', title: 'Spooky Magic', xp: 50, locked: true }
+                    { id: 'two-qubits', title: 'Two at Once', xp: 40 },
+                    { id: 'cnot', title: 'Connected Coins', xp: 45 },
+                    { id: 'entanglement', title: 'Spooky Magic', xp: 50 }
                 ]
             }
         ];
@@ -2732,6 +3166,253 @@
                     setTimeout(() => zone.classList.remove('highlight'), 300);
                 }, i * 200);
             });
+        }
+
+        // =====================================================
+        // TWO QUBIT LESSON FUNCTIONS
+        // =====================================================
+        let twoQubitA = 0;
+        let twoQubitB = 0;
+        let twoQubitSuperposition = false;
+        let twoQubitObservations = new Set();
+
+        function flipQubitA() {
+            if (twoQubitSuperposition) return;
+            twoQubitA = 1 - twoQubitA;
+            updateTwoQubitDisplay();
+        }
+
+        function flipQubitB() {
+            if (twoQubitSuperposition) return;
+            twoQubitB = 1 - twoQubitB;
+            updateTwoQubitDisplay();
+        }
+
+        function spinBothQubits() {
+            twoQubitSuperposition = true;
+            const qA = document.getElementById('qubitA');
+            const qB = document.getElementById('qubitB');
+
+            qA.classList.remove('off', 'on');
+            qA.classList.add('superposition');
+            qA.textContent = '?';
+
+            qB.classList.remove('off', 'on');
+            qB.classList.add('superposition');
+            qB.textContent = '?';
+
+            document.getElementById('twoQubitState').textContent = 'State: |??⟩';
+            document.getElementById('twoQubitMeaning').textContent = 'Both are spinning! All 4 possibilities at once!';
+        }
+
+        function measureBothQubits() {
+            if (!twoQubitSuperposition) return;
+
+            twoQubitA = Math.random() < 0.5 ? 0 : 1;
+            twoQubitB = Math.random() < 0.5 ? 0 : 1;
+            twoQubitSuperposition = false;
+
+            updateTwoQubitDisplay();
+
+            // Track observations
+            twoQubitObservations.add(`${twoQubitA}${twoQubitB}`);
+            if (twoQubitObservations.size >= 3) {
+                const status = document.getElementById('twoQubitStatus');
+                status.className = 'challenge-status success';
+                status.textContent = `✓ Great! You've seen ${twoQubitObservations.size} different outcomes!`;
+            }
+        }
+
+        function resetTwoQubits() {
+            twoQubitA = 0;
+            twoQubitB = 0;
+            twoQubitSuperposition = false;
+            updateTwoQubitDisplay();
+        }
+
+        function updateTwoQubitDisplay() {
+            const qA = document.getElementById('qubitA');
+            const qB = document.getElementById('qubitB');
+
+            qA.classList.remove('superposition');
+            qA.classList.toggle('off', twoQubitA === 0);
+            qA.classList.toggle('on', twoQubitA === 1);
+            qA.textContent = twoQubitA;
+
+            qB.classList.remove('superposition');
+            qB.classList.toggle('off', twoQubitB === 0);
+            qB.classList.toggle('on', twoQubitB === 1);
+            qB.textContent = twoQubitB;
+
+            document.getElementById('twoQubitState').textContent = `State: |${twoQubitA}${twoQubitB}⟩`;
+            const meanings = {
+                '00': 'Both are 0',
+                '01': 'A is 0, B is 1',
+                '10': 'A is 1, B is 0',
+                '11': 'Both are 1'
+            };
+            document.getElementById('twoQubitMeaning').textContent = meanings[`${twoQubitA}${twoQubitB}`];
+        }
+
+        // =====================================================
+        // CNOT LESSON FUNCTIONS
+        // =====================================================
+        let cnotControl = 0;
+        let cnotTarget = 0;
+
+        function toggleCnotControl() {
+            cnotControl = 1 - cnotControl;
+            updateCnotDisplay();
+        }
+
+        function toggleCnotTarget() {
+            cnotTarget = 1 - cnotTarget;
+            updateCnotDisplay();
+        }
+
+        function applyCnot() {
+            const history = document.getElementById('cnotHistory');
+            const oldTarget = cnotTarget;
+
+            if (cnotControl === 1) {
+                cnotTarget = 1 - cnotTarget;
+                history.innerHTML += `<div class="history-entry">Control=1, so target flipped: ${oldTarget}→${cnotTarget}</div>`;
+
+                // Check challenge
+                if (oldTarget === 0 && cnotTarget === 1) {
+                    const status = document.getElementById('cnotChallenge');
+                    status.className = 'challenge-status success';
+                    status.textContent = '✓ Perfect! When control is 1, target flips from 0 to 1!';
+                    showAchievement('⚡', 'CNOT Master!', 'You understand controlled operations!');
+                }
+            } else {
+                history.innerHTML += `<div class="history-entry">Control=0, nothing happened</div>`;
+            }
+
+            updateCnotDisplay();
+
+            // Add celebrate animation
+            document.getElementById('cnotTarget').classList.add('celebrate');
+            setTimeout(() => document.getElementById('cnotTarget').classList.remove('celebrate'), 300);
+        }
+
+        function resetCnot() {
+            cnotControl = 0;
+            cnotTarget = 0;
+            document.getElementById('cnotHistory').innerHTML = '<div style="color: var(--accent); margin-bottom: 0.5rem;">📝 What happened:</div>';
+            updateCnotDisplay();
+        }
+
+        function updateCnotDisplay() {
+            const ctrl = document.getElementById('cnotControl');
+            const tgt = document.getElementById('cnotTarget');
+
+            ctrl.classList.toggle('off', cnotControl === 0);
+            ctrl.classList.toggle('on', cnotControl === 1);
+            ctrl.textContent = cnotControl;
+
+            tgt.classList.toggle('off', cnotTarget === 0);
+            tgt.classList.toggle('on', cnotTarget === 1);
+            tgt.textContent = cnotTarget;
+
+            document.getElementById('cnotState').textContent = `State: |${cnotControl}${cnotTarget}⟩`;
+            document.getElementById('cnotExplain').textContent =
+                cnotControl === 0 ? 'Control=0, so target stays the same' : 'Control=1, CNOT will flip the target!';
+        }
+
+        // =====================================================
+        // BELL STATE (ENTANGLEMENT) FUNCTIONS
+        // =====================================================
+        let bellEntangled = false;
+        let bellMeasurements = 0;
+
+        function createBellState() {
+            bellEntangled = true;
+            const qA = document.getElementById('bellA');
+            const qB = document.getElementById('bellB');
+            const link = document.getElementById('bellLink');
+            const history = document.getElementById('bellHistory');
+
+            qA.classList.remove('off', 'on');
+            qA.classList.add('superposition');
+            qA.textContent = '?';
+
+            qB.classList.remove('off', 'on');
+            qB.classList.add('superposition');
+            qB.textContent = '?';
+
+            link.textContent = '⚡🔗⚡';
+            link.style.color = 'var(--purple)';
+
+            document.getElementById('bellStateDisplay').innerHTML =
+                '<span style="color: var(--purple);">ENTANGLED!</span> (|00⟩ + |11⟩)/√2';
+            document.getElementById('bellExplain').textContent =
+                'They\'re connected now! Whatever one does, the other will match!';
+
+            history.innerHTML += `<div class="history-entry" style="color: var(--purple);">✨ Applied H to A, then CNOT → ENTANGLED!</div>`;
+        }
+
+        function measureBellState() {
+            if (!bellEntangled) return;
+
+            const qA = document.getElementById('bellA');
+            const qB = document.getElementById('bellB');
+            const link = document.getElementById('bellLink');
+            const history = document.getElementById('bellHistory');
+
+            // Bell state always gives 00 or 11 with equal probability
+            const outcome = Math.random() < 0.5 ? 0 : 1;
+
+            qA.classList.remove('superposition');
+            qA.classList.add(outcome === 0 ? 'off' : 'on', 'measuring');
+            qA.textContent = outcome;
+
+            qB.classList.remove('superposition');
+            qB.classList.add(outcome === 0 ? 'off' : 'on', 'measuring');
+            qB.textContent = outcome;
+
+            setTimeout(() => {
+                qA.classList.remove('measuring');
+                qB.classList.remove('measuring');
+            }, 500);
+
+            link.textContent = '═══';
+
+            document.getElementById('bellStateDisplay').textContent = `Both measured: |${outcome}${outcome}⟩`;
+            document.getElementById('bellExplain').textContent =
+                outcome === 0 ? 'Both are 0! They matched!' : 'Both are 1! They matched!';
+
+            history.innerHTML += `<div class="history-entry">👁️ Looked → Both are <span class="result">${outcome}</span>! They match!</div>`;
+
+            bellMeasurements++;
+            if (bellMeasurements >= 3) {
+                showAchievement('🔮', 'Entanglement Expert!', 'You witnessed quantum entanglement!');
+            }
+
+            bellEntangled = false;
+        }
+
+        function resetBellState() {
+            bellEntangled = false;
+            const qA = document.getElementById('bellA');
+            const qB = document.getElementById('bellB');
+            const link = document.getElementById('bellLink');
+
+            qA.classList.remove('superposition', 'on');
+            qA.classList.add('off');
+            qA.textContent = '0';
+
+            qB.classList.remove('superposition', 'on');
+            qB.classList.add('off');
+            qB.textContent = '0';
+
+            link.textContent = '. . .';
+            link.style.color = 'var(--text-dim)';
+
+            document.getElementById('bellStateDisplay').textContent = 'Both qubits are |0⟩';
+            document.getElementById('bellExplain').textContent = 'Ready to entangle!';
+            document.getElementById('bellHistory').innerHTML =
+                '<div style="color: var(--purple); margin-bottom: 0.5rem;">📝 Observations:</div>';
         }
 
         // Initialize on load
