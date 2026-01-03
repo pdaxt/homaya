@@ -1,6 +1,6 @@
-//! QUASAR Simulator - Ultra-fast quantum state vector simulation.
+//! HOMAYA Simulator - Ultra-fast quantum state vector simulation.
 //!
-//! This crate provides the core simulation engine for QUASAR, offering:
+//! This crate provides the core simulation engine for HOMAYA, offering:
 //!
 //! - **Fast state vector simulation** optimized for cache efficiency
 //! - **Full gate support** including all standard gates

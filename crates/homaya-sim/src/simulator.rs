@@ -2,7 +2,7 @@
 //!
 //! Executes quantum circuits on state vectors.
 
-use homaya_core::{Circuit, Complex, Gate, GateType, GateParams, QuasarError, Result, INV_SQRT_2, PI};
+use homaya_core::{Circuit, Complex, Gate, GateType, GateParams, HomayaError, Result, INV_SQRT_2, PI};
 use crate::StateVector;
 
 /// Measurement results from circuit execution.
@@ -100,7 +100,7 @@ impl Simulator {
     /// Run a circuit starting from a given state.
     pub fn run_from_state(&mut self, circuit: &Circuit, state: StateVector) -> Result<StateVector> {
         if state.num_qubits() != circuit.num_qubits() {
-            return Err(QuasarError::QubitMismatch {
+            return Err(HomayaError::QubitMismatch {
                 expected: circuit.num_qubits(),
                 got: state.num_qubits(),
             });
@@ -233,7 +233,7 @@ impl Simulator {
             }
 
             _ => {
-                return Err(QuasarError::NotSupported {
+                return Err(HomayaError::NotSupported {
                     operation: "gate type not implemented",
                 });
             }
@@ -244,7 +244,7 @@ impl Simulator {
 
     /// Get the 2x2 matrix for a single-qubit gate.
     fn get_single_qubit_matrix(&self, gate: &Gate) -> Result<[[Complex; 2]; 2]> {
-        gate.matrix_2x2().ok_or(QuasarError::NotSupported {
+        gate.matrix_2x2().ok_or(HomayaError::NotSupported {
             operation: "gate has no 2x2 matrix",
         })
     }

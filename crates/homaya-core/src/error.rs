@@ -1,10 +1,10 @@
-//! Error types for QUASAR.
+//! Error types for HOMAYA.
 
 use core::fmt;
 
-/// Errors that can occur in QUASAR operations.
+/// Errors that can occur in HOMAYA operations.
 #[derive(Clone, Debug, PartialEq)]
-pub enum QuasarError {
+pub enum HomayaError {
     /// Qubit index out of range.
     QubitOutOfRange {
         /// The invalid qubit index
@@ -92,7 +92,7 @@ pub enum QuasarError {
     },
 }
 
-impl fmt::Display for QuasarError {
+impl fmt::Display for HomayaError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::QubitOutOfRange { qubit, max } => {
@@ -135,4 +135,4 @@ impl fmt::Display for QuasarError {
     }
 }
 
-impl std::error::Error for QuasarError {}
+impl std::error::Error for HomayaError {}

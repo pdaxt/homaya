@@ -2,7 +2,7 @@
 //!
 //! Fluent API for constructing quantum circuits.
 
-use crate::{Gate, GateType, QuasarError, Result};
+use crate::{Gate, GateType, HomayaError, Result};
 
 /// A quantum instruction: gate + target qubits.
 #[derive(Clone, Debug, PartialEq)]
@@ -327,6 +327,10 @@ impl Circuit {
     /// Measure a qubit.
     #[inline]
     pub fn measure(mut self, q: usize, c: usize) -> Self {
+        // Ensure we have enough classical bits
+        if self.num_clbits <= c {
+            self.num_clbits = c + 1;
+        }
         self.push(Instruction::with_clbits(Gate::measure(), std::vec![q], std::vec![c]));
         self
     }
@@ -368,7 +372,7 @@ impl Circuit {
     /// Append another circuit.
     pub fn compose(mut self, other: &Circuit) -> Result<Self> {
         if other.num_qubits > self.num_qubits {
-            return Err(QuasarError::QubitMismatch {
+            return Err(HomayaError::QubitMismatch {
                 expected: self.num_qubits,
                 got: other.num_qubits,
             });

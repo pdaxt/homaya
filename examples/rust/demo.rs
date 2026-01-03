@@ -1,4 +1,4 @@
-//! QUASAR Demo - Quantum Circuit Builder
+//! HOMAYA Demo - Quantum Circuit Builder
 //!
 //! Run with: cargo run --example demo
 
@@ -6,7 +6,7 @@ use homaya_core::{Circuit, Gate, GateType};
 
 fn main() {
     println!("╔═══════════════════════════════════════════════════════════════╗");
-    println!("║                         QUASAR Demo                           ║");
+    println!("║                         HOMAYA Demo                           ║");
     println!("║     Quantum Unified Architecture for Simulation And Runtime    ║");
     println!("╚═══════════════════════════════════════════════════════════════╝");
     println!();
@@ -141,6 +141,6 @@ fn main() {
     println!("                    Demo Complete!");
     println!("═══════════════════════════════════════════════════════════════");
     println!();
-    println!("QUASAR is ready. The quantum revolution starts here.");
+    println!("HOMAYA is ready. The quantum revolution starts here.");
     println!();
 }

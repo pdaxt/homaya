@@ -1,4 +1,4 @@
-//! QUASAR Correctness Verification
+//! HOMAYA Correctness Verification
 //!
 //! This demonstrates WHY the simulator is correct by checking
 //! mathematical properties that MUST hold for quantum mechanics.
@@ -10,7 +10,7 @@ use homaya_sim::Simulator;
 
 fn main() {
     println!("╔═══════════════════════════════════════════════════════════════╗");
-    println!("║              QUASAR Correctness Verification                  ║");
+    println!("║              HOMAYA Correctness Verification                  ║");
     println!("║         Proving the simulator obeys quantum mechanics          ║");
     println!("╚═══════════════════════════════════════════════════════════════╝");
     println!();

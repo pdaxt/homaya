@@ -218,6 +218,7 @@ name = "homaya-algorithms"
 version = "0.1.0"
 dependencies = [
  "homaya-core",
+ "homaya-sim",
 ]
 
 [[package]]

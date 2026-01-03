@@ -8,3 +8,8 @@ description = "HOMAYA homaya-algorithms"
 
 [dependencies]
 homaya-core = { path = "../homaya-core" }
+homaya-sim = { path = "../homaya-sim" }
+
+[[example]]
+name = "algorithms_showcase"
+path = "../../examples/rust/algorithms_showcase.rs"

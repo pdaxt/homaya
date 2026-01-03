@@ -1,4 +1,4 @@
-//! # QUASAR Core
+//! # HOMAYA Core
 //!
 //! Ultra-fast quantum computing primitives.
 //!
@@ -33,10 +33,10 @@ mod error;
 pub use complex::Complex;
 pub use gate::{Gate, GateType, GateParams};
 pub use circuit::{Circuit, Instruction};
-pub use error::QuasarError;
+pub use error::HomayaError;
 
-/// Result type for QUASAR operations
-pub type Result<T> = core::result::Result<T, QuasarError>;
+/// Result type for HOMAYA operations
+pub type Result<T> = core::result::Result<T, HomayaError>;
 
 /// The mathematical constant π
 pub const PI: f64 = core::f64::consts::PI;

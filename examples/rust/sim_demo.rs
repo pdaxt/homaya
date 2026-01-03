@@ -1,4 +1,4 @@
-//! QUASAR Simulator Demo - Quantum State Vector Simulation
+//! HOMAYA Simulator Demo - Quantum State Vector Simulation
 //!
 //! Run with: cargo run --example sim_demo
 
@@ -7,7 +7,7 @@ use homaya_sim::Simulator;
 
 fn main() {
     println!("╔═══════════════════════════════════════════════════════════════╗");
-    println!("║                    QUASAR Simulator Demo                      ║");
+    println!("║                    HOMAYA Simulator Demo                      ║");
     println!("║       Quantum State Vector Simulation Engine                   ║");
     println!("╚═══════════════════════════════════════════════════════════════╝");
     println!();
@@ -206,6 +206,6 @@ fn main() {
     println!("                   Simulator Demo Complete!                    ");
     println!("═══════════════════════════════════════════════════════════════");
     println!();
-    println!("QUASAR Simulator is operational. Ready for quantum computation.");
+    println!("HOMAYA Simulator is operational. Ready for quantum computation.");
     println!();
 }

@@ -1,8 +1,8 @@
 use clap::Parser;
 
 #[derive(Parser)]
-#[command(name = "quasar")]
-#[command(about = "QUASAR - Quantum Unified Architecture for Simulation And Runtime")]
+#[command(name = "homaya")]
+#[command(about = "HOMAYA - Quantum Unified Architecture for Simulation And Runtime")]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
@@ -27,11 +27,11 @@ fn main() {
             println!("Running circuit from: {}", file);
         }
         Some(Commands::Version) => {
-            println!("QUASAR v{}", env!("CARGO_PKG_VERSION"));
+            println!("HOMAYA v{}", env!("CARGO_PKG_VERSION"));
         }
         None => {
-            println!("QUASAR - The future of quantum infrastructure");
-            println!("Run 'quasar --help' for usage");
+            println!("HOMAYA - The future of quantum infrastructure");
+            println!("Run 'homaya --help' for usage");
         }
     }
 }

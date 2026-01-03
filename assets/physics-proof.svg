@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#16a34a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+
+  <!-- Header -->
+  <text x="600" y="70" font-family="Inter, system-ui, sans-serif" font-size="42" font-weight="700" fill="#fff" text-anchor="middle">8 Physics Tests. All Passing.</text>
+  <text x="600" y="105" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#666" text-anchor="middle">The computer can't be fooled.</text>
+
+  <!-- Tests grid - 2 columns, 4 rows -->
+  <g font-family="Inter, system-ui, sans-serif">
+    <!-- Row 1 -->
+    <g transform="translate(150, 160)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 1</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Probability Conservation</text>
+    </g>
+    <g transform="translate(650, 160)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 2</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Hadamard Self-Inverse</text>
+    </g>
+
+    <!-- Row 2 -->
+    <g transform="translate(150, 240)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 3</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Bell State Entanglement</text>
+    </g>
+    <g transform="translate(650, 240)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 4</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Pauli-X Self-Inverse</text>
+    </g>
+
+    <!-- Row 3 -->
+    <g transform="translate(150, 320)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 5</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Full Rotation Invariance</text>
+    </g>
+    <g transform="translate(650, 320)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 6</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">CNOT Truth Table</text>
+    </g>
+
+    <!-- Row 4 -->
+    <g transform="translate(150, 400)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 7</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">Statistical Sampling (10k)</text>
+    </g>
+    <g transform="translate(650, 400)">
+      <rect x="0" y="0" width="400" height="60" rx="8" fill="#141414" stroke="#262626" stroke-width="1"/>
+      <circle cx="35" cy="30" r="14" fill="url(#checkGrad)"/>
+      <text x="28" y="36" font-size="16" fill="#fff" font-weight="bold">✓</text>
+      <text x="65" y="26" font-size="14" fill="#888">Test 8</text>
+      <text x="65" y="44" font-size="16" fill="#fff" font-weight="500">50/50 Superposition</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="520" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="700" fill="#c44cff" text-anchor="middle">HOMAYA</text>
+  <text x="600" y="555" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#666" text-anchor="middle">If the tests pass, you understand quantum mechanics.</text>
+  <text x="600" y="590" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#444" text-anchor="middle">github.com/pdaxt/homaya</text>
+</svg>

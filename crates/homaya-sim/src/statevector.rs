@@ -2,7 +2,7 @@
 //!
 //! Optimized for cache-friendly access patterns.
 
-use homaya_core::{Complex, QuasarError, Result};
+use homaya_core::{Complex, HomayaError, Result};
 
 /// A quantum state vector.
 ///
@@ -58,7 +58,7 @@ impl StateVector {
     pub fn from_amplitudes(amplitudes: Vec<Complex>) -> Result<Self> {
         let dim = amplitudes.len();
         if dim == 0 || (dim & (dim - 1)) != 0 {
-            return Err(QuasarError::StateDimensionMismatch {
+            return Err(HomayaError::StateDimensionMismatch {
                 expected: 0,
                 got: dim,
             });
@@ -68,7 +68,7 @@ impl StateVector {
 
         let norm_sqr: f64 = amplitudes.iter().map(|c| c.norm_sqr()).sum();
         if (norm_sqr - 1.0).abs() > 1e-10 {
-            return Err(QuasarError::StateNotNormalized { norm: norm_sqr.sqrt() });
+            return Err(HomayaError::StateNotNormalized { norm: norm_sqr.sqrt() });
         }
 
         Ok(Self {
